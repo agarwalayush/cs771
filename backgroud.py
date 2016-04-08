@@ -43,7 +43,10 @@ while(1):
             (x, y, w, h) = cv2.boundingRect(c)
             # cv2.rectangle(fgmask, (x, y), (x + w, y + h), (255, 0, 0), 2)
             sift = cv2.SIFT()
-            im = frame[x:w,y:h]
+            im = frame[(y/red):(y+h/red), (x/red):(x+w/red)]
+            print(frame.shape,x,y,w,h)
+            print(im)
+
             if(min(im.shape) != 0):
                 key1, des1 = sift.detectAndCompute(im, None)
                 if des1 != None:
@@ -52,7 +55,8 @@ while(1):
                             a[m.predict(des1)[i]]+=1
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     s = str(svm.predict(a)[0])
-                    cv2.putText(frame,"1",(x,y), font, 1,(255,255,255),2)
+                    cv2.putText(frame,s,(x,y), font, 1,(255,255,255),2)
+
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
             text = "Occupied"
 
